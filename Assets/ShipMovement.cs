@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class ShipMovement : MonoBehaviour
 {
-    public float _thrust; //make private outside of testing
-    private Rigidbody2D _rb;
+    private float _thrust;   //value that determines how quickly the ship accelerates or decelerates
+    private Rigidbody2D _rb; //the rigidbody of the ship for determining physics
 
 	// Use this for initialization
 	void Start ()
 	{
+	    _thrust = 35;
 	    _rb = GetComponent<Rigidbody2D>();
 	}
 	
@@ -20,11 +21,11 @@ public class ShipMovement : MonoBehaviour
 	    var direction = Input.GetAxis("Horizontal");
 	    if (direction > 0)
 	    {
-            transform.Rotate(Vector3.back * 2);
+            transform.Rotate(Vector3.back * 2); //turn ship right
 	    }
 	    if (direction < 0)
 	    {
-            transform.Rotate(Vector3.forward * 2);
+            transform.Rotate(Vector3.forward * 2); //turn ship left
 	    }
 	}
 
@@ -32,7 +33,11 @@ public class ShipMovement : MonoBehaviour
     {
         if (Input.GetButton("Thrust"))
         {
-            _rb.AddForce(transform.up * _thrust * Time.fixedDeltaTime);
+            _rb.AddForce(transform.up * _thrust * Time.fixedDeltaTime); //accelerate
+        }
+        else if (Input.GetButton("Brake"))
+        {
+            _rb.AddForce(-1 * transform.up * _thrust * Time.fixedDeltaTime); //decelerate
         }
     }
 }
